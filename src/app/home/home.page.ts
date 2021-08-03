@@ -7,6 +7,28 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  // Criamos um array de pokemons
+  // [] => representa um array (Lista)
+  // {} => representa um objeto (Item)
+  listaPokemon = [
+    {
+      numero: '001',
+      nome: 'Bulbasaur',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png',
+      tipos: [
+        'Grass', 'Poison'
+      ]
+    },
+    {
+      numero: '004',
+      nome: 'Charmander',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/004.png',
+      tipos: [
+        'Fire'
+      ]
+    }
+  ];
+
+  constructor() { }
 
 }
