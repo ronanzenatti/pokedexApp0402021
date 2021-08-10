@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BulbasaurPage implements OnInit {
 
+  pokemon = {
+
+  };
+
   constructor() { }
 
   ngOnInit() {
