@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
   // Criamos um array de pokemons
   // [] => representa um array (Lista)
   // {} => representa um objeto (Item)
@@ -14,7 +13,23 @@ export class HomePage {
     {
       numero: '001',
       nome: 'Bulbasaur',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png',
+      tipos: [
+        'Grass', 'Poison'
+      ]
+    },
+    {
+      numero: '002',
+      nome: 'Ivysaur',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png',
+      tipos: [
+        'Grass', 'Poison'
+      ]
+    },
+    {
+      numero: '003',
+      nome: 'IVenusaur',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/003.png',
       tipos: [
         'Grass', 'Poison'
       ]
@@ -22,7 +37,23 @@ export class HomePage {
     {
       numero: '004',
       nome: 'Charmander',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/004.png',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png',
+      tipos: [
+        'Fire'
+      ]
+    },
+    {
+      numero: '005',
+      nome: 'Charmeleon',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/005.png',
+      tipos: [
+        'Fire'
+      ]
+    },
+    {
+      numero: '006',
+      nome: 'Charizard',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/006.png',
       tipos: [
         'Fire'
       ]
@@ -30,38 +61,54 @@ export class HomePage {
     {
       numero: '007',
       nome: 'Squirtle',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/007.png',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/007.png',
       tipos: [
         'Water'
       ]
     },
     {
-      numero: '025',
-      nome: 'Pikachu',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/025.png',
+      numero: '008',
+      nome: 'Wartortle',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/008.png',
       tipos: [
-        'Electric'
+        'Water'
       ]
-    }
+    },
+    {
+      numero: '009',
+      nome: 'Blastoise',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png',
+      tipos: [
+        'Water'
+      ]
+    },
+    {
+      numero: '010',
+      nome: 'Caterpie',
+      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/010.png',
+      tipos: [
+        'Bug'
+      ]
+    },
   ];
 
   listaPokemonFiltrada = [];
 
   constructor() {
-    this.retonarPokemon();
+    this.retornarPokemon();
   }
 
-  retonarPokemon(): void {
+  retornarPokemon(): void {
     this.listaPokemonFiltrada = this.listaPokemon;
   }
 
   buscarPokemon(evento): void {
-    this.retonarPokemon(); // Coloca todos os pokemons na lista Filtrada
+    this.retornarPokemon(); //coloca todos os pokemons na lista filtrada
 
-    // Pega o valor digitado no campo de busca.
+    // pega o valor digitado no campo de busca
     const busca: string = evento.target.value;
 
-    if (busca && busca.trim() !== '') { // Testa se tem alguma coisa no campo
+    if (busca && busca.trim() !== '') { //testa se tem alguma coisa no campo
       this.listaPokemonFiltrada = this.listaPokemon.filter(pokemon =>
         pokemon.nome.toLowerCase().includes(busca.trim().toLowerCase())
       );

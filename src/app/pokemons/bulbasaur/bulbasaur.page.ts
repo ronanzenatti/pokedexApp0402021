@@ -11,7 +11,11 @@ export class BulbasaurPage implements OnInit {
 
   };
 
-  constructor() { }
+  numeroPokemon: string;
+
+  constructor() {
+
+  }
 
   ngOnInit() {
   }
