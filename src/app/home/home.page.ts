@@ -1,3 +1,5 @@
+import { IPokemon } from './../models/IPokemon.model';
+import { PokemonService } from './../services/pokemon.service';
 import { DadosService } from './../services/dados.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
@@ -11,96 +13,37 @@ export class HomePage {
   // Criamos um array de pokemons
   // [] => representa um array (Lista)
   // {} => representa um objeto (Item)
-  listaPokemon = [
-    {
-      numero: '001',
-      nome: 'Bulbasaur',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png',
-      tipos: [
-        'Grass', 'Poison'
-      ]
-    },
-    {
-      numero: '002',
-      nome: 'Ivysaur',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png',
-      tipos: [
-        'Grass', 'Poison'
-      ]
-    },
-    {
-      numero: '003',
-      nome: 'IVenusaur',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/003.png',
-      tipos: [
-        'Grass', 'Poison'
-      ]
-    },
-    {
-      numero: '004',
-      nome: 'Charmander',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png',
-      tipos: [
-        'Fire'
-      ]
-    },
-    {
-      numero: '005',
-      nome: 'Charmeleon',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/005.png',
-      tipos: [
-        'Fire'
-      ]
-    },
-    {
-      numero: '006',
-      nome: 'Charizard',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/006.png',
-      tipos: [
-        'Fire'
-      ]
-    },
-    {
-      numero: '007',
-      nome: 'Squirtle',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/007.png',
-      tipos: [
-        'Water'
-      ]
-    },
-    {
-      numero: '008',
-      nome: 'Wartortle',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/008.png',
-      tipos: [
-        'Water'
-      ]
-    },
-    {
-      numero: '009',
-      nome: 'Blastoise',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/009.png',
-      tipos: [
-        'Water'
-      ]
-    },
-    {
-      numero: '010',
-      nome: 'Caterpie',
-      foto: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/010.png',
-      tipos: [
-        'Bug'
-      ]
-    },
-  ];
+  listaPokemon: IPokemon[] = [];
 
-  listaPokemonFiltrada = [];
+  listaPokemonFiltrada: IPokemon[] = [];
 
-  constructor(private dadosService: DadosService, private router: Router) {
-    this.retornarPokemon();
+  totalPokemons = 0; // Guarda o total de pokemons
+
+  offset = 0; // Utilizado para Navegar entre as páginas
+
+  constructor(
+    private dadosService: DadosService,
+    private router: Router,
+    private pokemonService: PokemonService) {
+
+    this.buscarPokemonAPI();
   }
 
   retornarPokemon(): void {
+
+    // Ordenar os pokemons pelo ID
+    this.listaPokemon.sort((a, b) => {
+      if (a.id > b.id) {
+        return 1;
+      }
+
+      if (a.id < b.id) {
+        return -1;
+      }
+
+      return 0;
+    });
+
     this.listaPokemonFiltrada = this.listaPokemon;
   }
 
@@ -112,7 +55,7 @@ export class HomePage {
 
     if (busca && busca.trim() !== '') { //testa se tem alguma coisa no campo
       this.listaPokemonFiltrada = this.listaPokemon.filter(pokemon =>
-        pokemon.nome.toLowerCase().includes(busca.trim().toLowerCase())
+        pokemon.name.toLowerCase().includes(busca.trim().toLowerCase())
       );
     }
   }
@@ -125,5 +68,26 @@ export class HomePage {
     this.router.navigateByUrl('/dados-pokemon');
 
   }
+
+  buscarPokemonAPI(offset = 0): void {
+    this.offset = offset;
+    this.listaPokemon = [];
+    this.pokemonService.buscarPokemons(this.offset).subscribe(dadosRetorno => {
+      console.log(dadosRetorno); // Pega a lista de pokemons da API
+
+      this.totalPokemons = dadosRetorno.count; // Pega o total de pokemons da API
+
+      // Percorre a lista de Pokemons para buscar os dados de cada pokemon.
+      for (const item of dadosRetorno.results) {
+
+        // Busca na API os dados de cada pokemon
+        this.pokemonService.buscarUmPokemon(item.url).subscribe(dadosPokemon => {
+          this.listaPokemon.push(dadosPokemon); // Coloca os dados no Array
+          this.retornarPokemon();
+        }); // Fim da busca de 1 pokemon
+
+      }// Fim do FOR
+    });// Fim do Subscribe
+  }// Fim do Método
 
 }
